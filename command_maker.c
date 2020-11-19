@@ -1,6 +1,6 @@
 #include "shell.h"
 
-char *command_line(char **buffer, size_t *buf_size)
+char *command_line(char **buffer, size_t *buf_size, char *av)
 {
         int c;
 
@@ -13,7 +13,7 @@ char *command_line(char **buffer, size_t *buf_size)
         return (*buffer);
 }
 
-char **parsing_line(char *buffer)
+char **parsing_line(char *buffer, char *av)
 {
         char **commands, *tokens;
         /* @s corresponde a los caracteres que se van a ignorar y que van

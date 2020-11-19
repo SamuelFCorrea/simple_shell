@@ -22,11 +22,15 @@
 
 /*****************************************************************************/
 
-void sh_interactive();
-void sh_nointeractive();
-void run_command(char **);
-char *command_line(char **, size_t *);
-char **parsing_line(char *);
+#define BUF_SIZE 1024
+
+/*****************************************************************************/
+
+void sh_interactive(char *, char **);
+void sh_nointeractive(char *, char **);
+void run_command(char **, char *, char **);
+char *command_line(char **, size_t *, char *);
+char **parsing_line(char *, char *);
 int _strlen(char *);
 char *_strncat(char *, char *);
 

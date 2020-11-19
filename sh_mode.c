@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void sh_interactive()
+void sh_interactive(char *av, char **env)
 {
         char *buffer, **commands;
         size_t buf_size = 1024;
@@ -17,17 +17,17 @@ void sh_interactive()
         while (1)
         {
 		/* en command_line leerá la linea que se escribá y la devolverá */
-                buffer = command_line(&buffer, &buf_size);
+                buffer = command_line(&buffer, &buf_size, av);
                 /* command_line retornará NULL en caso de que se de la instrucción de ctrl+d */
 		if (!buffer)
                         break;
 		/* parsing_line dividirá la string del input en varias, correspondientes a
 		 * cada instrucción
 		 */
-                commands = parsing_line(buffer);
+                commands = parsing_line(buffer, av);
                 /* se abre un nuevo proceso y en el subproceso se lanza la función de run_commands */
 		if (fork() == 0)
-                        run_command(commands);
+                        run_command(commands, av, env);
 		/* se espera a que se termine la ejecución del proceso para comenzar con la
 		 * siguiente ejecución del bucle
 		 */
@@ -35,7 +35,7 @@ void sh_interactive()
         }
 }
 
-void sh_nointeractive()
+void sh_nointeractive(char *av, char **env)
 {
         char *buffer, **commands;
         size_t buf_size = 1024;
@@ -51,7 +51,7 @@ void sh_nointeractive()
 	/* obtiene la string que se paso y la almacena en el buffer */
         getline(&buffer, &buf_size, stdin);
 	/* almacena en @commands las instruciones ya separadas */
-        commands = parsing_line(buffer);
+        commands = parsing_line(buffer, av);
 	/* se ejecuta el comando que se pasó */
-        run_command(commands);
+        run_command(commands, av, env);
 }

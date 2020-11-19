@@ -1,6 +1,6 @@
 #include "shell.h"
 
-void run_command(char **commands)
+void run_command(char **commands, char *av, char **env)
 {
 	/* si el comando comienza con '/' correrá el comando sin intentar
 	 * encontrarlo en las rutas del path, pues se le estará dando la
@@ -14,7 +14,7 @@ void run_command(char **commands)
 		 * se manda el mensaje de error
 		 */
                 if (access(commands[0], F_OK | X_OK) == 0)
-                        execve(commands[0], commands, NULL);
+                        execve(commands[0], commands, env);
                 else
                 {
                         perror(commands[0]);
@@ -31,7 +31,7 @@ void run_command(char **commands)
                         exit(1);
 		/* en caso de que se encuentre el archivo en la nueva ruta lo ejecuta */
                 if (access(commands[0], F_OK | X_OK) == 0)
-                        execve(commands[0], commands, NULL);
+                        execve(commands[0], commands, env);
 		/* en caso de que no se encuentre el archivo imprime el mensaje de error */
                 else
                 {
