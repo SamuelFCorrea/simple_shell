@@ -1,12 +1,12 @@
 #include "shell.h"
 
-void run_command(char **commands, char *av, char **env)
+void run_command(char **commands, char *av, char *env)
 {
 	/* si el comando comienza con '/' correrá el comando sin intentar
 	 * encontrarlo en las rutas del path, pues se le estará dando la
 	 * direccion que se va a utilizar
 	 */
-        if (commands[0][0] == '/')
+        if (commands[0][0] == '/' || commands[0][0] == '.')
         {
 		/* comprueba si el archivo existe y se tienen los permisos para
 		 * ejecutarlos
@@ -14,7 +14,7 @@ void run_command(char **commands, char *av, char **env)
 		 * se manda el mensaje de error
 		 */
                 if (access(commands[0], F_OK | X_OK) == 0)
-                        execve(commands[0], commands, env);
+                        execve(commands[0], commands, NULL);
                 else
                 {
                         perror(commands[0]);
@@ -23,20 +23,28 @@ void run_command(char **commands, char *av, char **env)
         }
 	/* si el comando no esta especificando la direccion del ejecutable */
         else
-        {
-		/* añade la ruta "/bin/" a la ruta del archivo para comprobar si existe */
-                commands[0] = _strncat("/bin/", commands[0]);
-		/* en caso de que ocurra un error mientras se añade el path retorna 1 */
-                if (commands == NULL)
-                        exit(1);
-		/* en caso de que se encuentre el archivo en la nueva ruta lo ejecuta */
-                if (access(commands[0], F_OK | X_OK) == 0)
-                        execve(commands[0], commands, env);
-		/* en caso de que no se encuentre el archivo imprime el mensaje de error */
-                else
-                {
-                        perror(commands[0]);
-                        exit(1);
-                }
-        }
+	{
+		commands[0] = find_path(commands, env);
+                execve(commands[0], commands, NULL);
+	}
+}
+
+char *find_path(char **commands, char *path)
+{
+	char *separator = "=:";
+	char *token, *new;
+
+	token = strtok(path, separator);
+
+	while (token)
+	{
+		new = _strncat(token, commands[0]);
+		if (access(new, F_OK | X_OK) == 0)
+			return (new);
+		else
+			token = strtok(NULL, separator);
+		free(new);
+	}
+	perror("Error");
+	exit(1);
 }

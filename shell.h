@@ -26,13 +26,15 @@
 
 /*****************************************************************************/
 
-void sh_interactive(char *, char **);
-void sh_nointeractive(char *, char **);
-void run_command(char **, char *, char **);
+void sh_interactive(char *, char *);
+void sh_nointeractive(char *, char *);
+void run_command(char **, char *, char *);
 char *command_line(char **, size_t *, char *);
 char **parsing_line(char *, char *);
 int _strlen(char *);
 char *_strncat(char *, char *);
+char *find_path(char **, char *);
+int get_path(char **);
 
 /*****************************************************************************/
 #endif

@@ -19,7 +19,7 @@ char **parsing_line(char *buffer, char *av)
         /* @s corresponde a los caracteres que se van a ignorar y que van
 	 * a determinar lo que separa una instruccion de otra
 	 */
-	char *s = " \n\t";
+	char *s = " \t\r\n\a";
         int i;
 
 	/* se abre espacio para almacenar las instruciones y en caso de no
