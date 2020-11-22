@@ -26,10 +26,13 @@ void sh_interactive(char *av)
 		 */
                 commands = parsing_line(buffer, av);
                 /* se abre un nuevo proceso y en el subproceso se lanza la función de run_commands */
+		if (commands)
+		{
                 run_command(commands, av);
 		/* se espera a que se termine la ejecución del proceso para comenzar con la
 		 * siguiente ejecución del bucle
 		 */
+		}
         }
 }
 

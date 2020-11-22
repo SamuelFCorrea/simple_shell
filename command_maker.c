@@ -34,7 +34,8 @@ char **parsing_line(char *buffer, char *av)
 
 	/* se adquiere la primera instruccion y se almacena en @tokens */
         tokens = strtok(buffer, s);
-
+	if (!tokens)
+		return (NULL);
 	/* un bucle que va a correr mientras aun queden instrucciones */
         for (i = 0; tokens; i++)
         {
