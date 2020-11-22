@@ -43,3 +43,12 @@ char *_strncat(char *dest, char *src)
 
         return (new);
 }
+
+int _strlen(char *str)
+{
+	int r = 0;
+
+	for (; *(str + r); r++)
+		;
+	return r;
+}

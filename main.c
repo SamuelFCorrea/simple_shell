@@ -1,17 +1,13 @@
 #include "shell.h"
 
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
-	int i;
-
 	(void)ac;
 
-	i = get_path(env);
-
 	if (isatty(STDIN_FILENO))
-		sh_interactive(av[0], env[i]);
+		sh_interactive(av[0]);
 	else
-		sh_nointeractive(av[0], env[i]);
+		sh_nointeractive(av[0]);
 
 	return (0);
 }

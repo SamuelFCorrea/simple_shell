@@ -1,9 +1,9 @@
 #include "shell.h"
 
-void sh_interactive(char *av, char *env)
+void sh_interactive(char *av)
 {
         char *buffer, **commands;
-        size_t buf_size = 1024;
+        size_t buf_size = BUF_SIZE;
 
 	/* crea y examina si hay espacio para el buffer */
         buffer = malloc(buf_size * sizeof(char));
@@ -26,19 +26,17 @@ void sh_interactive(char *av, char *env)
 		 */
                 commands = parsing_line(buffer, av);
                 /* se abre un nuevo proceso y en el subproceso se lanza la función de run_commands */
-		if (fork() == 0)
-                        run_command(commands, av, env);
+                run_command(commands, av);
 		/* se espera a que se termine la ejecución del proceso para comenzar con la
 		 * siguiente ejecución del bucle
 		 */
-                wait(NULL);
         }
 }
 
-void sh_nointeractive(char *av, char *env)
+void sh_nointeractive(char *av)
 {
         char *buffer, **commands;
-        size_t buf_size = 1024;
+        size_t buf_size = BUF_SIZE;
 	/* end of file */
 	int eof = 0;
 
@@ -50,17 +48,17 @@ void sh_nointeractive(char *av, char *env)
                 exit(1);
         }
 
-	while (eof != -1)
+	while (1)
 	{
-	/* obtiene la string que se paso y la almacena en el buffer */
-        eof =  getline(&buffer, &buf_size, stdin);
-	if (eof == -1)
-		break;
-	/* almacena en @commands las instruciones ya separadas */
-        commands = parsing_line(buffer, av);
-	/* se ejecuta el comando que se pasó */
-	if (fork() == 0)
-        	run_command(commands, av, env);
-	wait(NULL);
+		/* obtiene la string que se paso y la almacena en el buffer */
+        	eof =  getline(&buffer, &buf_size, stdin);
+		if (eof == -1)
+				break;
+		/* almacena en @commands las instruciones ya separadas */
+	        commands = parsing_line(buffer, av);
+		/* se ejecuta el comando que se pasó */
+		if (fork() == 0)
+        		run_command(commands, av);
+		wait(NULL);
 	}
 }
