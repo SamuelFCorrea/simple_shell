@@ -41,12 +41,14 @@ char **parsing_line(char *, char *);
 /* gets the lenght of a string */
 int _strlen(char *);
 /* concatenate a string */
-char *_strncat(char *, char *);
+char *_strncat(char *, char *, int);
 /* find the correct path of the command in $PATH */
 char *find_path(char **);
 /* finds the $PATH variable in the enviroment matix */
-int get_path(char **);
+int get_env(char *);
 int especial_c(char **);
+char *_pwd(char *);
+void cd(char **);
 
 /*****************************************************************************/
 

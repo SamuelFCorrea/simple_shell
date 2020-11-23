@@ -1,5 +1,59 @@
 #include "shell.h"
 
+void cd(char **command)
+{
+	char *pwd, *actual;
+	size_t b = BUF_SIZE, c;
+
+	pwd = malloc(b * sizeof(char));
+	actual = malloc(b * sizeof(char));
+	if (!actual || !pwd)
+	{
+		perror("failed to allocate memory");
+		exit(1);
+	}
+
+	getcwd(actual, b);
+
+	if (!command[1])
+	{
+		pwd = _pwd("HOME=");
+		chdir(pwd);
+		c = get_env("OLDPWD");
+		environ[c] = _strncat("OLDPWD=", actual, 0);
+		c = get_env("PWD");
+		environ[c] = _strncat("PWD=", pwd, 0);
+	}
+	else if (command[1][0] == '-')
+	{
+		c = get_env("OLDPWD");
+		if (c == -1)
+			perror("No OLDPWD");
+		else
+		{
+			pwd = _pwd("OLDPWD=");
+			chdir(pwd);
+			c = get_env("OLDPWD");
+			environ[c] = _strncat("OLDPWD=", actual, 0);
+			c = get_env("PWD");
+			environ[c] = _strncat("PWD=", pwd, 0);
+		}
+	}
+	else
+	{
+		if (chdir(command[1]) == -1)
+			perror("fail");
+		else
+		{
+			getcwd(pwd, b);
+			c = get_env("OLDPWD");
+			environ[c] = _strncat("OLDPWD=", actual, 0);
+			c = get_env("PWD");
+			environ[c] = _strncat("PWD=", pwd, 0);
+		}
+	}
+}
+
 void ex_ec(char **commands, int i)
 {
 	int j = 0, k;
@@ -7,11 +61,9 @@ void ex_ec(char **commands, int i)
 	switch (i)
 	{
 		case 0:
-			if (chdir(commands[1]) == -1)
-				perror("error cd");
+			cd(commands);
 			break;
 		case 1:
-			if (fork() == 0)
 			while(environ[j])
 			{
 				k = _strlen(environ[j]);
@@ -19,7 +71,6 @@ void ex_ec(char **commands, int i)
 				write(1, "\n", 1);
 				j++;
 			}
-			wait(NULL);
 			break;
 		case 2:
 			exit(1);
@@ -92,19 +143,34 @@ void run_command(char **commands, char *av)
 	wait(NULL);
 }
 
+
+char *_pwd(char *s)
+{
+	int n;
+	char *token;
+
+	n = get_env(s);
+	if (n == -1)
+		return (NULL);
+
+	token = strtok(environ[n], s);
+
+	return (token);
+}
+
 char *find_path(char **commands)
 {
 	int n;
 	char *separator = "=:";
 	char *token, *new;
 
-	n = get_path(environ);
+	n = get_env("PATH");
 
 	token = strtok(environ[n], separator);
 
 	while (token)
 	{
-		new = _strncat(token, commands[0]);
+		new = _strncat(token, commands[0], 1);
 		if (access(new, F_OK | X_OK) == 0)
 			return (new);
 		else

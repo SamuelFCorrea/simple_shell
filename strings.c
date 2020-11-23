@@ -1,16 +1,17 @@
 #include "shell.h"
 
-int get_path(char **env)
+int get_env(char *get)
 {
-        int j = 0, m = 1, i;
-        char *path = "PATH";
+        int j = 0, m = 1, i, l;
 
-        for (i = 0; env[i]; i++) 
-                if (env[i][j] == *(path + j))
+	l = _strlen(get);
+
+        for (i = 0; environ[i]; i++) 
+                if (environ[i][j] == *(get + j))
                         for (; m; j++)
-                                if (m == 4)
+                                if (m == l)
                                         return i;
-                                else if (env[i][j] == *(path + j))
+                                else if (environ[i][j] == *(get + j))
                                         m++;
                                 else
                                 {
@@ -21,7 +22,7 @@ int get_path(char **env)
         return -1;
 }
 
-char *_strncat(char *dest, char *src)
+char *_strncat(char *dest, char *src, int c)
 {
         int i, l = 0, l1 = 0;
         char *new;
@@ -37,9 +38,10 @@ char *_strncat(char *dest, char *src)
 
         for (i = 0; i < l; i++)
                 *(new + i) = *(dest + i);
-	*(new + i) = '/';
+	if (c == 1)
+		*(new + i) = '/';
         for (i = 0; i < l1; i++)
-                *(new + (l + i + 1)) = *(src + i);
+                *(new + (l + i + c)) = *(src + i);
 
         return (new);
 }

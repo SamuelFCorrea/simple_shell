@@ -60,8 +60,7 @@ void sh_nointeractive(char *av)
 		/* almacena en @commands las instruciones ya separadas */
 	        commands = parsing_line(buffer, av);
 		/* se ejecuta el comando que se pasó */
-		if (fork() == 0)
-        		run_command(commands, av);
-		wait(NULL);
+		if (commands)
+        	run_command(commands, av);
 	}
 }
