@@ -1,11 +1,11 @@
 #include "shell.h"
 
-void sh_interactive(char *av)
+void sh_interactive()
 {
-        char *buffer, **commands;
+        char *buffer = NULL, **commands = NULL;
         size_t buf_size = BUF_SIZE;
+	int i;
 
-	/* crea y examina si hay espacio para el buffer */
         buffer = malloc(buf_size * sizeof(char));
         if (!buffer)
         {
@@ -13,37 +13,31 @@ void sh_interactive(char *av)
                 exit(1);
         }
 
-	/* bucle infinito para recibir los comandos */
         while (1)
         {
-		/* en command_line leerá la linea que se escribá y la devolverá */
-                buffer = command_line(&buffer, &buf_size, av);
-                /* command_line retornará NULL en caso de que se de la instrucción de ctrl+d */
+                buffer = command_line(&buffer);
 		if (!buffer)
                         break;
-		/* parsing_line dividirá la string del input en varias, correspondientes a
-		 * cada instrucción
-		 */
-                commands = parsing_line(buffer, av);
-                /* se abre un nuevo proceso y en el subproceso se lanza la función de run_commands */
+                commands = parsing_line(buffer);
 		if (commands)
-		{
-                run_command(commands, av);
-		/* se espera a que se termine la ejecución del proceso para comenzar con la
-		 * siguiente ejecución del bucle
-		 */
-		}
-        }
+                	run_command(commands);
+	}
+	if (buffer)
+		free(buffer);
+	if (commands)
+	{
+	for (i = 0; commands[i]; i++)
+		free(commands[i]);
+	free(commands);
+	}
 }
 
-void sh_nointeractive(char *av)
+void sh_nointeractive()
 {
-        char *buffer, **commands;
+	char *buffer = NULL, **commands = NULL;
         size_t buf_size = BUF_SIZE;
-	/* end of file */
-	int eof = 0;
+	int eof = 0, i;
 
-	/* crea y examina si hay espacio para el buffer */
         buffer = malloc(buf_size * sizeof(char));
         if (!buffer)
         {
@@ -53,14 +47,15 @@ void sh_nointeractive(char *av)
 
 	while (1)
 	{
-		/* obtiene la string que se paso y la almacena en el buffer */
         	eof =  getline(&buffer, &buf_size, stdin);
-		if (eof == -1)
-				break;
-		/* almacena en @commands las instruciones ya separadas */
-	        commands = parsing_line(buffer, av);
-		/* se ejecuta el comando que se pasó */
+		if (eof == -1 || !buffer)
+			break;
+	        commands = parsing_line(buffer);
 		if (commands)
-        	run_command(commands, av);
+        		run_command(commands);
 	}
+	if (buffer)
+		free(buffer);
+	if (commands)
+	free(commands);
 }

@@ -6,15 +6,19 @@ void cd(char **command)
 	size_t b = BUF_SIZE, c;
 
 	pwd = malloc(b * sizeof(char));
-	actual = malloc(b * sizeof(char));
-	if (!actual || !pwd)
+	if (!pwd)
 	{
 		perror("failed to allocate memory");
 		exit(1);
 	}
-
+	actual = malloc(b * sizeof(char));
+	if (!actual)
+	{
+		free(pwd);
+		perror("failed to allocate memory");
+		exit(1);
+	}
 	getcwd(actual, b);
-
 	if (!command[1])
 	{
 		pwd = _pwd("HOME=");
@@ -42,7 +46,11 @@ void cd(char **command)
 	else
 	{
 		if (chdir(command[1]) == -1)
+		{
+			free(pwd);
+			free(actual);
 			perror("fail");
+		}
 		else
 		{
 			getcwd(pwd, b);
@@ -105,7 +113,7 @@ int especial_c(char **commands)
 	return 0;
 }
 
-void run_command(char **commands, char *av)
+void run_command(char **commands)
 {
 	int m;
 
@@ -114,17 +122,8 @@ void run_command(char **commands, char *av)
 	if (m == 0)
 	if (fork() == 0)
 	{
-	/* si el comando comienza con '/' correrá el comando sin intentar
-	 * encontrarlo en las rutas del path, pues se le estará dando la
-	 * direccion que se va a utilizar
-	 */
 	        if (commands[0][0] == '/' || commands[0][0] == '.')
        		{
-		/* comprueba si el archivo existe y se tienen los permisos para
-		 * ejecutarlos
-		 * en caso de tenerlos se ejecuta la funcion execve de lo contrario
-		 * se manda el mensaje de error
-		 */
            	        if (access(commands[0], F_OK | X_OK) == 0)
                         	execve(commands[0], commands, NULL);
                 	else
@@ -133,7 +132,6 @@ void run_command(char **commands, char *av)
                         	exit(1);
                 	}
         	}
-		/* si el comando no esta especificando la direccion del ejecutable */
         	else
 		{
 			commands[0] = find_path(commands);
