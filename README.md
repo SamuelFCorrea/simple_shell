@@ -6,13 +6,13 @@ This project consists of creating our own version of a simple shell which is cap
 
 ## How To Install & Compile
 
-To have this repository and its content, you must execute the following on your terminal:
+ To have this repository and its content, you must execute the following on your terminal:
 
-$git clone https://github.com/SamuelFCorrea/simple_shell.git
-$cd simple_shell
-$ls
+ $git clone https://github.com/SamuelFCorrea/simple_shell.git
+ $cd simple_shell
+ $ls
 
-And execute the following in your terminal:
+ And execute the following in your terminal:
 
-$gcc -Wall -Werror -Wextra -pedantic *.c
-$./a.out [...]
+ $gcc -Wall -Werror -Wextra -pedantic *.c
+ $./a.out [...]
