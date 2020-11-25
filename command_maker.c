@@ -15,7 +15,7 @@ char *command_line(char **buffer)
 	int c;
 	size_t buf_size = BUF_SIZE;
 
-	write(1, ">> ", 3);
+	write(1, "$ ", 2);
 	c = getline(buffer, &buf_size, stdin);
 	if (c == -1)
 		return (NULL);
@@ -40,7 +40,7 @@ char **parsing_line(char *buffer)
 	commands = malloc(64 * sizeof(char *));
 	if (!commands)
 	{
-		perror("Error: imposible to allocate buffer memory");
+		print_error("Error: failed to allocate memory", 1);
 		return (NULL);
 	}
 

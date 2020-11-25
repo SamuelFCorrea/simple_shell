@@ -46,7 +46,7 @@ void cd(char **command)
 	else
 	{
 		if (chdir(command[1]) == -1)
-			perror("fail");
+			print_error("Error: failed to allocate memory", 1);
 		else
 		{
 			getcwd(pwd, b);
@@ -186,6 +186,5 @@ char *find_path(char **commands)
 		token = strtok(NULL, separator);
 		free(new);
 	}
-	perror("Error");
-	exit(1);
+	print_error(commands[0], 0);
 }

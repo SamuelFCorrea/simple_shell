@@ -51,6 +51,17 @@ int get_env(char *);
 int especial_c(char **);
 char *_pwd(char *);
 void cd(char **);
+void create_error(char **, int);
+char *error_126(char **);
+char *error_127(char **);
+int num_len(int);
+char *_itoa(int);
+//int help_function(var_s *);
+void print_help(void);
+void help_exit(void);
+void help_help(void);
+void help_env(void);
+void print_error(char *, int);
 
 /*****************************************************************************/
 

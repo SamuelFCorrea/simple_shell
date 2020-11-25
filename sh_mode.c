@@ -15,8 +15,8 @@ void sh_interactive(void)
 	buffer = malloc(buf_size * sizeof(char));
 	if (!buffer)
 	{
-		perror("Error: imposible to allocate buffer memory");
-	exit(1);
+		print_error("Error: failed to allocate memory", 1);
+		exit(1);
 	}
 
 	while (1)
@@ -55,7 +55,7 @@ void sh_nointeractive(void)
 	buffer = malloc(buf_size * sizeof(char));
 	if (!buffer)
 	{
-		perror("Error: imposible to allocate buffer memory");
+		print_error("Error: failed to allocate memory", 1);
 		exit(1);
 	}
 
