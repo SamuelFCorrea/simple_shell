@@ -9,10 +9,13 @@ This project consists of creating our own version of a simple shell which is cap
  To have this repository and its content, you must execute the following on your terminal:
 
  $git clone https://github.com/SamuelFCorrea/simple_shell.git
+ 
  $cd simple_shell
+ 
  $ls
 
  And execute the following in your terminal:
 
  $gcc -Wall -Werror -Wextra -pedantic *.c
+ 
  $./a.out [...]
