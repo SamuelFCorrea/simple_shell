@@ -28,13 +28,15 @@ extern char **environ;
 /*****************************************************************************/
 
 /* start the shell in an interactive mode reading and executing commands */
-void sh_interactive();
+void sh_interactive(void);
 /* start the shell in a no interactive mode */
-void sh_nointeractive();
+void sh_nointeractive(void);
 /* execute the commands passed in the normal input */
 void run_command(char **);
-/* read the input, stage it in the buffer and pass it to the parsing_line
- * fuction also print the PS1 variable */
+/*
+ * read the input, stage it in the buffer and pass it to the parsing_line
+ * fuction also print the PS1 variable
+ */
 char *command_line(char **);
 /* parse the buffer to make it a matrix */
 char **parsing_line(char *);
