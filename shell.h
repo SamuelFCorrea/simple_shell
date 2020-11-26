@@ -56,7 +56,7 @@ char *error_126(char **);
 char *error_127(char **);
 int num_len(int);
 char *_itoa(int);
-//int help_function(var_s *);
+/* int help_function(var_s *); */
 void print_help(void);
 void help_exit(void);
 void help_help(void);

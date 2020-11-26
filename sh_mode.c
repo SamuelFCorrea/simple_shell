@@ -40,7 +40,7 @@ void sh_interactive(void)
 
 
 /**
- * sh_noninteractive - run the command in the input and
+ * sh_nointeractive - run the command in the input and
  * finish the execution
  *
  * Return: none
@@ -50,7 +50,7 @@ void sh_nointeractive(void)
 {
 	char *buffer = NULL, **commands = NULL;
 	size_t buf_size = BUF_SIZE;
-	int eof = 0, i;
+	int eof = 0;
 
 	buffer = malloc(buf_size * sizeof(char));
 	if (!buffer)

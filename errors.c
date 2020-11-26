@@ -1,5 +1,10 @@
 #include "shell.h"
 
+/**
+ * print_error - Writes an error message to stderr.
+ * @arg0: Arguments.
+ * @i: Iterator.
+ */
 void print_error(char *arg0, int i)
 {
 	char *erbuffer;
@@ -23,5 +28,5 @@ void print_error(char *arg0, int i)
 		write(1, "\n", 1);
 	}
 	exit(1);
-//	free(erbuffer);
+	free(erbuffer);
 }

@@ -1,64 +1,6 @@
 #include "shell.h"
 
 /**
- * cd - function to change the current working directory
- * @command: cd arguments
- *
- * Return: none
- */
-
-void cd(char **command)
-{
-	char *pwd, *actual;
-	size_t b = BUF_SIZE, c;
-
-	pwd = malloc(b * sizeof(char));
-	if (!pwd)
-		exit(1);
-	actual = malloc(b * sizeof(char));
-	if (!actual)
-		exit(1);
-	getcwd(actual, b);
-	if (!command[1])
-	{
-		pwd = _pwd("HOME=");
-		chdir(pwd);
-		c = get_env("OLDPWD");
-		environ[c] = _strncat("OLDPWD=", actual, 0);
-		c = get_env("PWD");
-		environ[c] = _strncat("PWD=", pwd, 0);
-	}
-	else if (command[1][0] == '-')
-	{
-		c = get_env("OLDPWD");
-		if (c == -1)
-			perror("No OLDPWD");
-		else
-		{
-			pwd = _pwd("OLDPWD=");
-			chdir(pwd);
-			c = get_env("OLDPWD");
-			environ[c] = _strncat("OLDPWD=", actual, 0);
-			c = get_env("PWD");
-			environ[c] = _strncat("PWD=", pwd, 0);
-		}
-	}
-	else
-	{
-		if (chdir(command[1]) == -1)
-			print_error("Error: failed to allocate memory", 1);
-		else
-		{
-			getcwd(pwd, b);
-			c = get_env("OLDPWD");
-			environ[c] = _strncat("OLDPWD=", actual, 0);
-			c = get_env("PWD");
-			environ[c] = _strncat("PWD=", pwd, 0);
-		}
-	}
-}
-
-/**
  * ex_ec - funtion to determinate if a builtin is required
  * @commands: command and arguments
  * @i: command id
@@ -73,7 +15,7 @@ void ex_ec(char **commands, int i)
 	switch (i)
 	{
 		case 0:
-			cd(commands);
+			if (commands != NULL)
 			break;
 		case 1:
 			while (environ[j])
@@ -187,4 +129,5 @@ char *find_path(char **commands)
 		free(new);
 	}
 	print_error(commands[0], 0);
+	exit(1);
 }
