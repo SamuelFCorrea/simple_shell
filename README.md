@@ -25,7 +25,7 @@ This project consists of creating our own version of a simple shell which is cap
 
 ## Flowchart:
 
-![Shell Flowchart](https://imgur.com/a/JtJqOuJ)
+![Diagrama en blanco](https://user-images.githubusercontent.com/66297338/100475586-7e39e480-30b1-11eb-9a01-55259ea636fb.png)
 
 ## How To Install & Compile
 
