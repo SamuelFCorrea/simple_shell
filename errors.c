@@ -27,6 +27,6 @@ void print_error(char *arg0, int i)
 		write(STDERR_FILENO, arg0, l);
 		write(1, "\n", 1);
 	}
-	exit(1);
 	free(erbuffer);
+	exit(1);
 }
