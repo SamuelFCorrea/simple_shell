@@ -23,6 +23,10 @@ This project consists of creating our own version of a simple shell which is cap
 + All your header files should be include guarded
 + Use system calls only when you need to ([why?](https://www.quora.com/Why-are-system-calls-expensive-in-operating-systems))
 
+## Flowchart:
+
+![Shell Flowchart](https://imgur.com/a/JtJqOuJ)
+
 ## How To Install & Compile
 
  To have this repository and its content, you must execute the following on your terminal:
@@ -40,7 +44,7 @@ $ ls
 ```
  $ gcc -Wall -Werror -Wextra -pedantic *.c -o shell
 
- $./shell
+ $ ./shell
 ```
 And now you can type and execute commands writing its relative path, see below:
 
