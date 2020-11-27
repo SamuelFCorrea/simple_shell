@@ -27,7 +27,7 @@ void ex_ec(char **commands, int i)
 			}
 			break;
 		case 2:
-			exit(1);
+			exit(0);
 			break;
 		default:
 			exit(69);
